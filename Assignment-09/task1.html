@@ -1,0 +1,24 @@
+<!--
+  INVERTIS UNIVERSITY, BAREILLY
+  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)
+  Assignment 9: DOM, Validation, Storage and Quiz - Task 1
+  Student Name: sumit singh
+  Roll Number: 2510303522
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM Click Event</title>
+</head>
+<body>
+    <h1 id="heading">Welcome</h1>
+    <button id="btn">Change text</button>
+
+    <script>
+        document.getElementById("btn").addEventListener("click", function() {
+            document.getElementById("heading").textContent = "Button clicked";
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invertis University - JavaScript Programming Lab (BCS354)</title>
+    <style>
+        :root {
+            --bg-body: #0b0f19;
+            --bg-card: #151d30;
+            --bg-card-sub: #1e293b;
+            --border-color: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #f59e0b;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --terminal-bg: #030712;
+            --code-bg: #0d1117;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border-color);
+            border-left: 6px solid var(--accent);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            color: #ffffff;
+        }
+
+        .badge-univ {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .student-banner {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .student-banner span strong {
+            color: var(--accent);
+        }
+
+        .controls-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .selector-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+
+        label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        select {
+            background: var(--bg-card-sub);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            cursor: pointer;
+            min-width: 260px;
+        }
+
+        .task-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .task-btn {
+            background: var(--bg-card-sub);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-btn:hover {
+            background: #334155;
+            color: #fff;
+        }
+
+        .task-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 992px) {
+            .workspace-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header {
+            background: var(--bg-card-sub);
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .run-btn {
+            background: #059669;
+        }
+
+        .code-container {
+            background: var(--code-bg);
+            padding: 16px;
+            overflow: auto;
+            max-height: 520px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #e6edf3;
+            white-space: pre-wrap;
+        }
+
+        .terminal-window {
+            background: var(--terminal-bg);
+            border-radius: 0 0 12px 12px;
+            padding: 18px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.92rem;
+            color: #d1d5db;
+            min-height: 240px;
+            max-height: 520px;
+            overflow-y: auto;
+        }
+
+        .terminal-prompt {
+            color: #60a5fa;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .terminal-out {
+            color: #34d399;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .preview-iframe {
+            width: 100%;
+            height: 240px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .screenshot-box {
+            margin-top: 16px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 14px;
+        }
+
+        .screenshot-box img {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+
+        .nav-footer {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+
+        .nav-btn {
+            background: var(--bg-card-sub);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-top">
+            <h1>⚡ BCS354 – JavaScript Programming Lab</h1>
+            <span class="badge-univ">Invertis University, Bareilly</span>
+        </div>
+        <div class="student-banner">
+            <span><strong>Student Name:</strong> sumit singh</span>
+            <span><strong>Roll Number:</strong> 2510303522</span>
+            <span><strong>Course:</strong> B.Tech CSE – 2nd Year</span>
+            <span><strong>Status:</strong> All 15 Assignments Verified & Ready</span>
+        </div>
+    </header>
+
+    <div class="controls-card">
+        <div class="selector-group">
+            <label for="assignSelect">Select Assignment:</label>
+            <select id="assignSelect" onchange="onAssignmentChange()"></select>
+
+            <label>Tasks:</label>
+            <div id="taskPills" class="task-pills"></div>
+        </div>
+    </div>
+
+    <div class="workspace-grid">
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title" id="codePanelTitle">📄 Source Code</div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="action-btn" onclick="copyCode()">📋 Copy</button>
+                    <button id="runBtn" class="action-btn run-btn" onclick="runCodeLive()">▶ Run Live</button>
+                </div>
+            </div>
+            <pre id="codeView" class="code-container"></pre>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">💻 Terminal & Execution Output</div>
+                <span id="taskTypeBadge" style="font-size: 0.78rem; background: #334155; padding: 4px 8px; border-radius: 4px; color: #38bdf8;">Node.js</span>
+            </div>
+            <div class="terminal-window" id="terminalWindow">
+                <div class="terminal-prompt" id="termPrompt">C:\Users\sumit\bcs354-javascript-lab\Assignment-01&gt; node task1.js</div>
+                <div class="terminal-out" id="termOutput"></div>
+                
+                <div id="htmlPreviewArea" style="display: none; margin-top: 14px;">
+                    <div style="font-weight: 600; color: #cbd5e1; margin-bottom: 8px;">🌐 Browser DOM Preview:</div>
+                    <iframe id="previewFrame" class="preview-iframe"></iframe>
+                </div>
+
+                <div class="screenshot-box">
+                    <div style="font-weight: 600; color: #cbd5e1; margin-bottom: 8px;">📸 Actual Windows Terminal Screenshot:</div>
+                    <img id="screenshotImg" src="" alt="Terminal Screenshot">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-footer">
+        <button class="nav-btn" onclick="prevAssignment()">⬅ Previous</button>
+        <span id="assignIndexText" style="color: var(--text-muted); font-size: 0.9rem;">Assignment 1 of 15</span>
+        <button class="nav-btn" onclick="nextAssignment()">Next ➡</button>
+    </div>
+</div>
+
+<script>
+    const LAB_DATA = [{"num": 1, "folder": "Assignment-01", "title": "Assignment 01", "screenshot": "Assignment-01/output.png", "output": "--- Task 1 Output (Browser Console F12) ---\nHello from the script\n\n--- Task 2 Output ($ node task2.js) ---\nSample College\n2026\n\n--- Task 3 Output ($ node task3.js) ---\nstring\nnumber\nboolean", "tasks": [{"taskNum": "1", "filename": "task1.html", "isHtml": true, "code": "<!--\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 1: Your First JavaScript Script - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n-->\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>First JavaScript Script</title>\n</head>\n<body>\n    <h1>JavaScript in Browser</h1>\n    <p>Check browser console (F12) to see output.</p>\n    <script>\n        console.log(\"Hello from the script\");\n    </script>\n</body>\n</html>\n", "output": "--- Task 1 Output (Browser Console F12) ---\nHello from the script\n\n--- Task 2 Output ($ node task2.js) ---\nSample College\n2026\n\n--- Task 3 Output ($ node task3.js) ---\nstring\nnumber\nboolean", "htmlPath": "Assignment-01/task1.html", "screenshot": "Assignment-01/output.png"}, {"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 1: Your First JavaScript Script - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconsole.log(\"Hello from the script\");\n", "output": "--- Task 1 Output (Browser Console F12) ---\nHello from the script\n\n--- Task 2 Output ($ node task2.js) ---\nSample College\n2026\n\n--- Task 3 Output ($ node task3.js) ---\nstring\nnumber\nboolean", "htmlPath": null, "screenshot": "Assignment-01/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 1: Your First JavaScript Script - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst schoolName = \"Sample College\";\nlet year = 2026;\n\nconsole.log(schoolName);\nconsole.log(year);\n", "output": "--- Task 1 Output (Browser Console F12) ---\nHello from the script\n\n--- Task 2 Output ($ node task2.js) ---\nSample College\n2026\n\n--- Task 3 Output ($ node task3.js) ---\nstring\nnumber\nboolean", "htmlPath": null, "screenshot": "Assignment-01/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 1: Your First JavaScript Script - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconsole.log(typeof \"hello\");\nconsole.log(typeof 7);\nconsole.log(typeof true);\n", "output": "--- Task 1 Output (Browser Console F12) ---\nHello from the script\n\n--- Task 2 Output ($ node task2.js) ---\nSample College\n2026\n\n--- Task 3 Output ($ node task3.js) ---\nstring\nnumber\nboolean", "htmlPath": null, "screenshot": "Assignment-01/output.png"}]}, {"num": 2, "folder": "Assignment-02", "title": "Assignment 02", "screenshot": "Assignment-02/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\n22\n12\n85\n3.4\n\n--- Task 2 Output ($ node task2.js) ---\n17\n73\n\n--- Task 3 Output ($ node task3.js) ---\n12\n4", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 2: Operators, Type Conversion and a Calculator - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst a = 17;\nconst b = 5;\n\nconsole.log(a + b); // Sum\nconsole.log(a - b); // Difference\nconsole.log(a * b); // Product\nconsole.log(a / b); // Quotient\n", "output": "--- Task 1 Output ($ node task1.js) ---\n22\n12\n85\n3.4\n\n--- Task 2 Output ($ node task2.js) ---\n17\n73\n\n--- Task 3 Output ($ node task3.js) ---\n12\n4", "htmlPath": null, "screenshot": "Assignment-02/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 2: Operators, Type Conversion and a Calculator - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\n// Convert text \"12\" to number and add 5\nconst num = Number(\"12\") + 5;\nconsole.log(num);\n\n// Convert number 7 to text and join with \"3\"\nconst text = String(7) + \"3\";\nconsole.log(text);\n", "output": "--- Task 1 Output ($ node task1.js) ---\n22\n12\n85\n3.4\n\n--- Task 2 Output ($ node task2.js) ---\n17\n73\n\n--- Task 3 Output ($ node task3.js) ---\n12\n4", "htmlPath": null, "screenshot": "Assignment-02/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 2: Operators, Type Conversion and a Calculator - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction calculate(num1, num2, op) {\n    if (op === \"+\") {\n        console.log(num1 + num2);\n    } else if (op === \"-\") {\n        console.log(num1 - num2);\n    }\n}\n\nlet num1 = 8;\nlet num2 = 4;\nlet op = \"+\";\ncalculate(num1, num2, op);\n\nop = \"-\";\ncalculate(num1, num2, op);\n", "output": "--- Task 1 Output ($ node task1.js) ---\n22\n12\n85\n3.4\n\n--- Task 2 Output ($ node task2.js) ---\n17\n73\n\n--- Task 3 Output ($ node task3.js) ---\n12\n4", "htmlPath": null, "screenshot": "Assignment-02/output.png"}]}, {"num": 3, "folder": "Assignment-03", "title": "Assignment 03", "screenshot": "Assignment-03/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\nGrade B\n\n--- Task 2 Output ($ node task2.js) ---\n1\n2\n3\n4\n5\n\n--- Task 3 Output ($ node task3.js) ---\n21", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 3: Conditions and Loops - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nlet marks = 72;\n\nif (marks >= 75) {\n    console.log(\"Grade A\");\n} else if (marks >= 60) {\n    console.log(\"Grade B\");\n} else {\n    console.log(\"Grade C\");\n}\n", "output": "--- Task 1 Output ($ node task1.js) ---\nGrade B\n\n--- Task 2 Output ($ node task2.js) ---\n1\n2\n3\n4\n5\n\n--- Task 3 Output ($ node task3.js) ---\n21", "htmlPath": null, "screenshot": "Assignment-03/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 3: Conditions and Loops - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfor (let i = 1; i <= 5; i++) {\n    console.log(i);\n}\n", "output": "--- Task 1 Output ($ node task1.js) ---\nGrade B\n\n--- Task 2 Output ($ node task2.js) ---\n1\n2\n3\n4\n5\n\n--- Task 3 Output ($ node task3.js) ---\n21", "htmlPath": null, "screenshot": "Assignment-03/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 3: Conditions and Loops - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nlet total = 0;\nlet num = 1;\n\nwhile (total <= 20) {\n    total += num;\n    num++;\n}\n\nconsole.log(total);\n", "output": "--- Task 1 Output ($ node task1.js) ---\nGrade B\n\n--- Task 2 Output ($ node task2.js) ---\n1\n2\n3\n4\n5\n\n--- Task 3 Output ($ node task3.js) ---\n21", "htmlPath": null, "screenshot": "Assignment-03/output.png"}]}, {"num": 4, "folder": "Assignment-04", "title": "Assignment 04", "screenshot": "Assignment-04/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\nHello, Asha\n\n--- Task 2 Output ($ node task2.js) ---\n36\n\n--- Task 3 Output ($ node task3.js) ---\n118", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 4: Writing Functions - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction greet(name) {\n    return \"Hello, \" + name;\n}\n\nconsole.log(greet(\"Asha\"));\n", "output": "--- Task 1 Output ($ node task1.js) ---\nHello, Asha\n\n--- Task 2 Output ($ node task2.js) ---\n36\n\n--- Task 3 Output ($ node task3.js) ---\n118", "htmlPath": null, "screenshot": "Assignment-04/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 4: Writing Functions - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst square = (n) => n * n;\n\nconsole.log(square(6));\n", "output": "--- Task 1 Output ($ node task1.js) ---\nHello, Asha\n\n--- Task 2 Output ($ node task2.js) ---\n36\n\n--- Task 3 Output ($ node task3.js) ---\n118", "htmlPath": null, "screenshot": "Assignment-04/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 4: Writing Functions - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction billWithTax(amount, taxRate = 0.18) {\n    return amount + (amount * taxRate);\n}\n\nconsole.log(billWithTax(100));\n", "output": "--- Task 1 Output ($ node task1.js) ---\nHello, Asha\n\n--- Task 2 Output ($ node task2.js) ---\n36\n\n--- Task 3 Output ($ node task3.js) ---\n118", "htmlPath": null, "screenshot": "Assignment-04/output.png"}]}, {"num": 5, "folder": "Assignment-05", "title": "Assignment 05", "screenshot": "Assignment-05/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\n4\n72\n\n--- Task 2 Output ($ node task2.js) ---\nMaths\nScience\nEnglish\n\n--- Task 3 Output ($ node task3.js) ---\n[ 72, 85, 90 ]\n\n--- Task 4 Output ($ node task4.js) ---\n6", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 5: Arrays, Array Methods and Nested Arrays - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst marks = [72, 85, 64, 90];\n\nconsole.log(marks.length);\nconsole.log(marks[0]);\n", "output": "--- Task 1 Output ($ node task1.js) ---\n4\n72\n\n--- Task 2 Output ($ node task2.js) ---\nMaths\nScience\nEnglish\n\n--- Task 3 Output ($ node task3.js) ---\n[ 72, 85, 90 ]\n\n--- Task 4 Output ($ node task4.js) ---\n6", "htmlPath": null, "screenshot": "Assignment-05/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 5: Arrays, Array Methods and Nested Arrays - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst subjects = [\"Maths\", \"Science\", \"English\"];\n\nsubjects.forEach(subject => {\n    console.log(subject);\n});\n", "output": "--- Task 1 Output ($ node task1.js) ---\n4\n72\n\n--- Task 2 Output ($ node task2.js) ---\nMaths\nScience\nEnglish\n\n--- Task 3 Output ($ node task3.js) ---\n[ 72, 85, 90 ]\n\n--- Task 4 Output ($ node task4.js) ---\n6", "htmlPath": null, "screenshot": "Assignment-05/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 5: Arrays, Array Methods and Nested Arrays - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst marks = [72, 85, 45, 90];\n\nconst filteredMarks = marks.filter(mark => mark >= 60);\nconsole.log(filteredMarks);\n", "output": "--- Task 1 Output ($ node task1.js) ---\n4\n72\n\n--- Task 2 Output ($ node task2.js) ---\nMaths\nScience\nEnglish\n\n--- Task 3 Output ($ node task3.js) ---\n[ 72, 85, 90 ]\n\n--- Task 4 Output ($ node task4.js) ---\n6", "htmlPath": null, "screenshot": "Assignment-05/output.png"}, {"taskNum": "4", "filename": "task4.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 5: Arrays, Array Methods and Nested Arrays - Task 4\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst grid = [\n    [1, 2, 3],\n    [4, 5, 6]\n];\n\n// Row 2, Column 3 (index 1, 2)\nconsole.log(grid[1][2]);\n", "output": "--- Task 1 Output ($ node task1.js) ---\n4\n72\n\n--- Task 2 Output ($ node task2.js) ---\nMaths\nScience\nEnglish\n\n--- Task 3 Output ($ node task3.js) ---\n[ 72, 85, 90 ]\n\n--- Task 4 Output ($ node task4.js) ---\n6", "htmlPath": null, "screenshot": "Assignment-05/output.png"}]}, {"num": 6, "folder": "Assignment-06", "title": "Assignment 06", "screenshot": "Assignment-06/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\n{\"name\":\"Rohan\",\"marks\":[70,80]}\n\n--- Task 2 Output ($ node task2.js) ---\nPune\n\n--- Task 3 Output ($ node task3.js) ---\nInvalid JSON", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 6: JSON Text - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst student = {\n    name: \"Rohan\",\n    marks: [70, 80]\n};\n\nconst jsonText = JSON.stringify(student);\nconsole.log(jsonText);\n", "output": "--- Task 1 Output ($ node task1.js) ---\n{\"name\":\"Rohan\",\"marks\":[70,80]}\n\n--- Task 2 Output ($ node task2.js) ---\nPune\n\n--- Task 3 Output ($ node task3.js) ---\nInvalid JSON", "htmlPath": null, "screenshot": "Assignment-06/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 6: JSON Text - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst jsonStr = '{\"city\":\"Pune\",\"pin\":411001}';\n\nconst obj = JSON.parse(jsonStr);\nconsole.log(obj.city);\n", "output": "--- Task 1 Output ($ node task1.js) ---\n{\"name\":\"Rohan\",\"marks\":[70,80]}\n\n--- Task 2 Output ($ node task2.js) ---\nPune\n\n--- Task 3 Output ($ node task3.js) ---\nInvalid JSON", "htmlPath": null, "screenshot": "Assignment-06/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 6: JSON Text - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst invalidJson = \"{name: Rohan}\";\n\ntry {\n    JSON.parse(invalidJson);\n} catch (error) {\n    console.log(\"Invalid JSON\");\n}\n", "output": "--- Task 1 Output ($ node task1.js) ---\n{\"name\":\"Rohan\",\"marks\":[70,80]}\n\n--- Task 2 Output ($ node task2.js) ---\nPune\n\n--- Task 3 Output ($ node task3.js) ---\nInvalid JSON", "htmlPath": null, "screenshot": "Assignment-06/output.png"}]}, {"num": 7, "folder": "Assignment-07", "title": "Assignment 07", "screenshot": "Assignment-07/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\nAsha\n88\n\n--- Task 2 Output ($ node task2.js) ---\nAlgorithms has 320 pages\n\n--- Task 3 Output ($ node task3.js) ---\nPass", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 7: Constructor Functions and Classes - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction Student(name, marks) {\n    this.name = name;\n    this.marks = marks;\n}\n\nconst s1 = new Student(\"Asha\", 88);\nconsole.log(s1.name);\nconsole.log(s1.marks);\n", "output": "--- Task 1 Output ($ node task1.js) ---\nAsha\n88\n\n--- Task 2 Output ($ node task2.js) ---\nAlgorithms has 320 pages\n\n--- Task 3 Output ($ node task3.js) ---\nPass", "htmlPath": null, "screenshot": "Assignment-07/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 7: Constructor Functions and Classes - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nclass Book {\n    constructor(title, pages) {\n        this.title = title;\n        this.pages = pages;\n    }\n\n    summary() {\n        return `${this.title} has ${this.pages} pages`;\n    }\n}\n\nconst book = new Book(\"Algorithms\", 320);\nconsole.log(book.summary());\n", "output": "--- Task 1 Output ($ node task1.js) ---\nAsha\n88\n\n--- Task 2 Output ($ node task2.js) ---\nAlgorithms has 320 pages\n\n--- Task 3 Output ($ node task3.js) ---\nPass", "htmlPath": null, "screenshot": "Assignment-07/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 7: Constructor Functions and Classes - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction Student(name, marks) {\n    this.name = name;\n    this.marks = marks;\n}\n\nStudent.prototype.result = function() {\n    return this.marks >= 40 ? \"Pass\" : \"Fail\";\n};\n\nconst s2 = new Student(\"Asha\", 88);\nconsole.log(s2.result());\n", "output": "--- Task 1 Output ($ node task1.js) ---\nAsha\n88\n\n--- Task 2 Output ($ node task2.js) ---\nAlgorithms has 320 pages\n\n--- Task 3 Output ($ node task3.js) ---\nPass", "htmlPath": null, "screenshot": "Assignment-07/output.png"}]}, {"num": 8, "folder": "Assignment-08", "title": "Assignment 08", "screenshot": "Assignment-08/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\nHi, I am Anita\n\n--- Task 2 Output ($ node task2.js) ---\nfalse\ntrue\n\n--- Task 3 Output ($ node task3.js) ---\nCar starts with 150 HP", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 8: Inheritance, Methods and Composition - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nclass Person {\n    constructor(name) {\n        this.name = name;\n    }\n\n    greet() {\n        return \"Hi, I am \" + this.name;\n    }\n}\n\nclass Teacher extends Person {\n    constructor(name, subject) {\n        super(name);\n        this.subject = subject;\n    }\n}\n\nconst teacher = new Teacher(\"Anita\", \"Maths\");\nconsole.log(teacher.greet());\n", "output": "--- Task 1 Output ($ node task1.js) ---\nHi, I am Anita\n\n--- Task 2 Output ($ node task2.js) ---\nfalse\ntrue\n\n--- Task 3 Output ($ node task3.js) ---\nCar starts with 150 HP", "htmlPath": null, "screenshot": "Assignment-08/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 8: Inheritance, Methods and Composition - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nclass Locker {\n    constructor() {\n        this.pin = 1234;\n    }\n\n    checkPin(number) {\n        return number === this.pin;\n    }\n}\n\nconst myLocker = new Locker();\nconsole.log(myLocker.checkPin(1111));\nconsole.log(myLocker.checkPin(1234));\n", "output": "--- Task 1 Output ($ node task1.js) ---\nHi, I am Anita\n\n--- Task 2 Output ($ node task2.js) ---\nfalse\ntrue\n\n--- Task 3 Output ($ node task3.js) ---\nCar starts with 150 HP", "htmlPath": null, "screenshot": "Assignment-08/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 8: Inheritance, Methods and Composition - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nclass Engine {\n    constructor(power) {\n        this.power = power;\n    }\n}\n\nclass Car {\n    constructor(power) {\n        this.engine = new Engine(power);\n    }\n\n    start() {\n        return `Car starts with ${this.engine.power} HP`;\n    }\n}\n\nconst car = new Car(150);\nconsole.log(car.start());\n", "output": "--- Task 1 Output ($ node task1.js) ---\nHi, I am Anita\n\n--- Task 2 Output ($ node task2.js) ---\nfalse\ntrue\n\n--- Task 3 Output ($ node task3.js) ---\nCar starts with 150 HP", "htmlPath": null, "screenshot": "Assignment-08/output.png"}]}, {"num": 9, "folder": "Assignment-09", "title": "Assignment 09", "screenshot": "Assignment-09/output.png", "output": "--- Task 1 (Pure JS & DOM Page) ---\nInitial Heading: Welcome\nUpdated Heading: Button clicked\n(Also implemented in task1.html: click button changes heading text to \"Button clicked\")\n\n--- Task 2 Output ($ node task2.js) ---\n[]\n[ 'Name is required' ]\n\n--- Task 3 (Pure JS & LocalStorage Page) ---\nSaved note to storage: Study JavaScript for Semester Exams\nLoaded note from storage: Study JavaScript for Semester Exams\n(Also implemented in task3.html: saves input to localStorage under key \"note\" and displays on load)\n\n--- Task 4 (Pure JS & Quiz Page) ---\nChecking answer 4: Try again\nChecking answer 5: Correct\nChecking answer 6: Try again\n(Also implemented in task4.html: radio button quiz shows \"Correct\" for 5, \"Try again\" otherwise)", "tasks": [{"taskNum": "1", "filename": "task1.html", "isHtml": true, "code": "<!--\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 9: DOM, Validation, Storage and Quiz - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n-->\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>DOM Click Event</title>\n</head>\n<body>\n    <h1 id=\"heading\">Welcome</h1>\n    <button id=\"btn\">Change text</button>\n\n    <script>\n        document.getElementById(\"btn\").addEventListener(\"click\", function() {\n            document.getElementById(\"heading\").textContent = \"Button clicked\";\n        });\n    </script>\n</body>\n</html>\n", "output": "--- Task 1 (Pure JS & DOM Page) ---\nInitial Heading: Welcome\nUpdated Heading: Button clicked\n(Also implemented in task1.html: click button changes heading text to \"Button clicked\")\n\n--- Task 2 Output ($ node task2.js) ---\n[]\n[ 'Name is required' ]\n\n--- Task 3 (Pure JS & LocalStorage Page) ---\nSaved note to storage: Study JavaScript for Semester Exams\nLoaded note from storage: Study JavaScript for Semester Exams\n(Also implemented in task3.html: saves input to localStorage under key \"note\" and displays on load)\n\n--- Task 4 (Pure JS & Quiz Page) ---\nChecking answer 4: Try again\nChecking answer 5: Correct\nChecking answer 6: Try again\n(Also implemented in task4.html: radio button quiz shows \"Correct\" for 5, \"Try again\" otherwise)", "htmlPath": "Assignment-09/task1.html", "screenshot": "Assignment-09/output.png"}, {"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 9: DOM, Validation, Storage and Quiz - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\n// Simulating DOM Heading and Button click in pure JavaScript\nlet headingText = \"Welcome\";\nconsole.log(\"Initial Heading:\", headingText);\n\nfunction onButtonClick() {\n    headingText = \"Button clicked\";\n}\n\nonButtonClick();\nconsole.log(\"Updated Heading:\", headingText);\n", "output": "--- Task 1 (Pure JS & DOM Page) ---\nInitial Heading: Welcome\nUpdated Heading: Button clicked\n(Also implemented in task1.html: click button changes heading text to \"Button clicked\")\n\n--- Task 2 Output ($ node task2.js) ---\n[]\n[ 'Name is required' ]\n\n--- Task 3 (Pure JS & LocalStorage Page) ---\nSaved note to storage: Study JavaScript for Semester Exams\nLoaded note from storage: Study JavaScript for Semester Exams\n(Also implemented in task3.html: saves input to localStorage under key \"note\" and displays on load)\n\n--- Task 4 (Pure JS & Quiz Page) ---\nChecking answer 4: Try again\nChecking answer 5: Correct\nChecking answer 6: Try again\n(Also implemented in task4.html: radio button quiz shows \"Correct\" for 5, \"Try again\" otherwise)", "htmlPath": null, "screenshot": "Assignment-09/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 9: DOM, Validation, Storage and Quiz - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction validateForm(name) {\n    const errors = [];\n    if (!name || name.trim() === \"\") {\n        errors.push(\"Name is required\");\n    }\n    return errors;\n}\n\nconsole.log(validateForm(\"Asha\"));\nconsole.log(validateForm(\"\"));\n", "output": "--- Task 1 (Pure JS & DOM Page) ---\nInitial Heading: Welcome\nUpdated Heading: Button clicked\n(Also implemented in task1.html: click button changes heading text to \"Button clicked\")\n\n--- Task 2 Output ($ node task2.js) ---\n[]\n[ 'Name is required' ]\n\n--- Task 3 (Pure JS & LocalStorage Page) ---\nSaved note to storage: Study JavaScript for Semester Exams\nLoaded note from storage: Study JavaScript for Semester Exams\n(Also implemented in task3.html: saves input to localStorage under key \"note\" and displays on load)\n\n--- Task 4 (Pure JS & Quiz Page) ---\nChecking answer 4: Try again\nChecking answer 5: Correct\nChecking answer 6: Try again\n(Also implemented in task4.html: radio button quiz shows \"Correct\" for 5, \"Try again\" otherwise)", "htmlPath": null, "screenshot": "Assignment-09/output.png"}, {"taskNum": "3", "filename": "task3.html", "isHtml": true, "code": "<!--\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 9: DOM, Validation, Storage and Quiz - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n-->\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>LocalStorage Note</title>\n</head>\n<body>\n    <h1>Persistent Note</h1>\n    <input type=\"text\" id=\"noteInput\" placeholder=\"Enter note\">\n    <button id=\"saveBtn\">Save</button>\n\n    <script>\n        const input = document.getElementById(\"noteInput\");\n        const saveBtn = document.getElementById(\"saveBtn\");\n\n        // Load saved text on page open\n        const savedNote = localStorage.getItem(\"note\");\n        if (savedNote !== null) {\n            input.value = savedNote;\n        }\n\n        // Save on click\n        saveBtn.addEventListener(\"click\", function() {\n            localStorage.setItem(\"note\", input.value);\n            alert(\"Note saved successfully!\");\n        });\n    </script>\n</body>\n</html>\n", "output": "--- Task 1 (Pure JS & DOM Page) ---\nInitial Heading: Welcome\nUpdated Heading: Button clicked\n(Also implemented in task1.html: click button changes heading text to \"Button clicked\")\n\n--- Task 2 Output ($ node task2.js) ---\n[]\n[ 'Name is required' ]\n\n--- Task 3 (Pure JS & LocalStorage Page) ---\nSaved note to storage: Study JavaScript for Semester Exams\nLoaded note from storage: Study JavaScript for Semester Exams\n(Also implemented in task3.html: saves input to localStorage under key \"note\" and displays on load)\n\n--- Task 4 (Pure JS & Quiz Page) ---\nChecking answer 4: Try again\nChecking answer 5: Correct\nChecking answer 6: Try again\n(Also implemented in task4.html: radio button quiz shows \"Correct\" for 5, \"Try again\" otherwise)", "htmlPath": "Assignment-09/task3.html", "screenshot": "Assignment-09/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 9: DOM, Validation, Storage and Quiz - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\n// Simulating localStorage storage and retrieval in pure JavaScript\nconst mockLocalStorage = {};\n\nfunction saveNote(note) {\n    mockLocalStorage[\"note\"] = note;\n    console.log(\"Saved note to storage:\", note);\n}\n\nfunction loadNote() {\n    return mockLocalStorage[\"note\"] || \"\";\n}\n\nsaveNote(\"Study JavaScript for Semester Exams\");\nconsole.log(\"Loaded note from storage:\", loadNote());\n", "output": "--- Task 1 (Pure JS & DOM Page) ---\nInitial Heading: Welcome\nUpdated Heading: Button clicked\n(Also implemented in task1.html: click button changes heading text to \"Button clicked\")\n\n--- Task 2 Output ($ node task2.js) ---\n[]\n[ 'Name is required' ]\n\n--- Task 3 (Pure JS & LocalStorage Page) ---\nSaved note to storage: Study JavaScript for Semester Exams\nLoaded note from storage: Study JavaScript for Semester Exams\n(Also implemented in task3.html: saves input to localStorage under key \"note\" and displays on load)\n\n--- Task 4 (Pure JS & Quiz Page) ---\nChecking answer 4: Try again\nChecking answer 5: Correct\nChecking answer 6: Try again\n(Also implemented in task4.html: radio button quiz shows \"Correct\" for 5, \"Try again\" otherwise)", "htmlPath": null, "screenshot": "Assignment-09/output.png"}, {"taskNum": "4", "filename": "task4.html", "isHtml": true, "code": "<!--\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 9: DOM, Validation, Storage and Quiz - Task 4\n  Student Name: sumit singh\n  Roll Number: 2510303522\n-->\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Math Quiz</title>\n</head>\n<body>\n    <h2>What is 2 + 3?</h2>\n    <form id=\"quizForm\">\n        <label><input type=\"radio\" name=\"answer\" value=\"4\"> 4</label><br>\n        <label><input type=\"radio\" name=\"answer\" value=\"5\"> 5</label><br>\n        <label><input type=\"radio\" name=\"answer\" value=\"6\"> 6</label><br><br>\n        <button type=\"button\" id=\"checkBtn\">Check answer</button>\n    </form>\n    <p id=\"resultMsg\" style=\"font-weight: bold; margin-top: 10px;\"></p>\n\n    <script>\n        document.getElementById(\"checkBtn\").addEventListener(\"click\", function() {\n            const selected = document.querySelector('input[name=\"answer\"]:checked');\n            const msg = document.getElementById(\"resultMsg\");\n            if (selected && selected.value === \"5\") {\n                msg.textContent = \"Correct\";\n                msg.style.color = \"green\";\n            } else {\n                msg.textContent = \"Try again\";\n                msg.style.color = \"red\";\n            }\n        });\n    </script>\n</body>\n</html>\n", "output": "--- Task 1 (Pure JS & DOM Page) ---\nInitial Heading: Welcome\nUpdated Heading: Button clicked\n(Also implemented in task1.html: click button changes heading text to \"Button clicked\")\n\n--- Task 2 Output ($ node task2.js) ---\n[]\n[ 'Name is required' ]\n\n--- Task 3 (Pure JS & LocalStorage Page) ---\nSaved note to storage: Study JavaScript for Semester Exams\nLoaded note from storage: Study JavaScript for Semester Exams\n(Also implemented in task3.html: saves input to localStorage under key \"note\" and displays on load)\n\n--- Task 4 (Pure JS & Quiz Page) ---\nChecking answer 4: Try again\nChecking answer 5: Correct\nChecking answer 6: Try again\n(Also implemented in task4.html: radio button quiz shows \"Correct\" for 5, \"Try again\" otherwise)", "htmlPath": "Assignment-09/task4.html", "screenshot": "Assignment-09/output.png"}, {"taskNum": "4", "filename": "task4.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 9: DOM, Validation, Storage and Quiz - Task 4\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\n// Question: What is 2 + 3?\nfunction checkQuizAnswer(chosenAnswer) {\n    if (chosenAnswer === 5) {\n        return \"Correct\";\n    } else {\n        return \"Try again\";\n    }\n}\n\nconsole.log(\"Checking answer 4:\", checkQuizAnswer(4));\nconsole.log(\"Checking answer 5:\", checkQuizAnswer(5));\nconsole.log(\"Checking answer 6:\", checkQuizAnswer(6));\n", "output": "--- Task 1 (Pure JS & DOM Page) ---\nInitial Heading: Welcome\nUpdated Heading: Button clicked\n(Also implemented in task1.html: click button changes heading text to \"Button clicked\")\n\n--- Task 2 Output ($ node task2.js) ---\n[]\n[ 'Name is required' ]\n\n--- Task 3 (Pure JS & LocalStorage Page) ---\nSaved note to storage: Study JavaScript for Semester Exams\nLoaded note from storage: Study JavaScript for Semester Exams\n(Also implemented in task3.html: saves input to localStorage under key \"note\" and displays on load)\n\n--- Task 4 (Pure JS & Quiz Page) ---\nChecking answer 4: Try again\nChecking answer 5: Correct\nChecking answer 6: Try again\n(Also implemented in task4.html: radio button quiz shows \"Correct\" for 5, \"Try again\" otherwise)", "htmlPath": null, "screenshot": "Assignment-09/output.png"}]}, {"num": 10, "folder": "Assignment-10", "title": "Assignment 10", "screenshot": "Assignment-10/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\nRohan\n81\n\n--- Task 2 Output ($ node task2.js) ---\nMaths\nScience\n\n--- Task 3 Output ($ node task3.js) ---\nRohan\n12", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 10: Objects and Destructuring - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst student = {\n    name: \"Rohan\",\n    roll: 12,\n    marks: 78\n};\n\nconsole.log(student.name);\nstudent.marks = 81;\nconsole.log(student.marks);\n", "output": "--- Task 1 Output ($ node task1.js) ---\nRohan\n81\n\n--- Task 2 Output ($ node task2.js) ---\nMaths\nScience\n\n--- Task 3 Output ($ node task3.js) ---\nRohan\n12", "htmlPath": null, "screenshot": "Assignment-10/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 10: Objects and Destructuring - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst subjects = [\"Maths\", \"Science\", \"English\"];\n\nconst [first, second] = subjects;\nconsole.log(first);\nconsole.log(second);\n", "output": "--- Task 1 Output ($ node task1.js) ---\nRohan\n81\n\n--- Task 2 Output ($ node task2.js) ---\nMaths\nScience\n\n--- Task 3 Output ($ node task3.js) ---\nRohan\n12", "htmlPath": null, "screenshot": "Assignment-10/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 10: Objects and Destructuring - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst student = {\n    name: \"Rohan\",\n    roll: 12,\n    marks: 81\n};\n\nconst { name, roll } = student;\nconsole.log(name);\nconsole.log(roll);\n", "output": "--- Task 1 Output ($ node task1.js) ---\nRohan\n81\n\n--- Task 2 Output ($ node task2.js) ---\nMaths\nScience\n\n--- Task 3 Output ($ node task3.js) ---\nRohan\n12", "htmlPath": null, "screenshot": "Assignment-10/output.png"}]}, {"num": 11, "folder": "Assignment-11", "title": "Assignment 11", "screenshot": "Assignment-11/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\ninner\nouter\n\n--- Task 2 Output ($ node task2.js) ---\n1\n2\n\n--- Task 3 Output ($ node task3.js) ---\nWelcome to Sample College", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 11: Scope and Closures - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nlet level = \"outer\";\n\n{\n    let level = \"inner\";\n    console.log(level);\n}\n\nconsole.log(level);\n", "output": "--- Task 1 Output ($ node task1.js) ---\ninner\nouter\n\n--- Task 2 Output ($ node task2.js) ---\n1\n2\n\n--- Task 3 Output ($ node task3.js) ---\nWelcome to Sample College", "htmlPath": null, "screenshot": "Assignment-11/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 11: Scope and Closures - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction makeCounter() {\n    let count = 0;\n    return function() {\n        count += 1;\n        return count;\n    };\n}\n\nconst counter = makeCounter();\nconsole.log(counter());\nconsole.log(counter());\n", "output": "--- Task 1 Output ($ node task1.js) ---\ninner\nouter\n\n--- Task 2 Output ($ node task2.js) ---\n1\n2\n\n--- Task 3 Output ($ node task3.js) ---\nWelcome to Sample College", "htmlPath": null, "screenshot": "Assignment-11/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 11: Scope and Closures - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nlet school = \"Sample College\";\n\nfunction showSchool() {\n    console.log(\"Welcome to \" + school);\n}\n\nshowSchool();\n", "output": "--- Task 1 Output ($ node task1.js) ---\ninner\nouter\n\n--- Task 2 Output ($ node task2.js) ---\n1\n2\n\n--- Task 3 Output ($ node task3.js) ---\nWelcome to Sample College", "htmlPath": null, "screenshot": "Assignment-11/output.png"}]}, {"num": 12, "folder": "Assignment-12", "title": "Assignment 12", "screenshot": "Assignment-12/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\n25\n\n--- Task 2 Output ($ node task2.js) ---\nMarks: 76/100\n\n--- Task 3 Output ($ node task3.js) ---\nRound 1\nRound 2\nRound 3", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 12: Callbacks and Higher-Order Functions - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction applyTwice(fn, value) {\n    return fn(fn(value));\n}\n\nfunction addTen(num) {\n    return num + 10;\n}\n\nconsole.log(applyTwice(addTen, 5));\n", "output": "--- Task 1 Output ($ node task1.js) ---\n25\n\n--- Task 2 Output ($ node task2.js) ---\nMarks: 76/100\n\n--- Task 3 Output ($ node task3.js) ---\nRound 1\nRound 2\nRound 3", "htmlPath": null, "screenshot": "Assignment-12/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 12: Callbacks and Higher-Order Functions - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction formatMarks(marks, callback) {\n    return callback(marks);\n}\n\nconsole.log(formatMarks(76, (marks) => `Marks: ${marks}/100`));\n", "output": "--- Task 1 Output ($ node task1.js) ---\n25\n\n--- Task 2 Output ($ node task2.js) ---\nMarks: 76/100\n\n--- Task 3 Output ($ node task3.js) ---\nRound 1\nRound 2\nRound 3", "htmlPath": null, "screenshot": "Assignment-12/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 12: Callbacks and Higher-Order Functions - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction repeatAction(times, action) {\n    for (let i = 1; i <= times; i++) {\n        action(i);\n    }\n}\n\nrepeatAction(3, (round) => {\n    console.log(\"Round \" + round);\n});\n", "output": "--- Task 1 Output ($ node task1.js) ---\n25\n\n--- Task 2 Output ($ node task2.js) ---\nMarks: 76/100\n\n--- Task 3 Output ($ node task3.js) ---\nRound 1\nRound 2\nRound 3", "htmlPath": null, "screenshot": "Assignment-12/output.png"}]}, {"num": 13, "folder": "Assignment-13", "title": "Assignment 13", "screenshot": "Assignment-13/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\n465\n\n--- Task 2 Output ($ node task2.js) ---\ntrue\nfalse\n\n--- Task 3 Output ($ node task3.js) ---\n[ 77, 90, 69, 95 ]\n[ 72, 85, 64, 90 ]", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 13: Reduce, Some, Every and Map - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst prices = [120, 45, 300];\n\nconst total = prices.reduce((acc, curr) => acc + curr, 0);\nconsole.log(total);\n", "output": "--- Task 1 Output ($ node task1.js) ---\n465\n\n--- Task 2 Output ($ node task2.js) ---\ntrue\nfalse\n\n--- Task 3 Output ($ node task3.js) ---\n[ 77, 90, 69, 95 ]\n[ 72, 85, 64, 90 ]", "htmlPath": null, "screenshot": "Assignment-13/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 13: Reduce, Some, Every and Map - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst marks = [72, 85, 30, 90];\n\nconst anyBelow40 = marks.some(mark => mark < 40);\nconsole.log(anyBelow40);\n\nconst allAtLeast35 = marks.every(mark => mark >= 35);\nconsole.log(allAtLeast35);\n", "output": "--- Task 1 Output ($ node task1.js) ---\n465\n\n--- Task 2 Output ($ node task2.js) ---\ntrue\nfalse\n\n--- Task 3 Output ($ node task3.js) ---\n[ 77, 90, 69, 95 ]\n[ 72, 85, 64, 90 ]", "htmlPath": null, "screenshot": "Assignment-13/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 13: Reduce, Some, Every and Map - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst marks = [72, 85, 64, 90];\n\nconst increasedMarks = marks.map(mark => mark + 5);\nconsole.log(increasedMarks);\nconsole.log(marks);\n", "output": "--- Task 1 Output ($ node task1.js) ---\n465\n\n--- Task 2 Output ($ node task2.js) ---\ntrue\nfalse\n\n--- Task 3 Output ($ node task3.js) ---\n[ 77, 90, 69, 95 ]\n[ 72, 85, 64, 90 ]", "htmlPath": null, "screenshot": "Assignment-13/output.png"}]}, {"num": 14, "folder": "Assignment-14", "title": "Assignment 14", "screenshot": "Assignment-14/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\nStart\nEnd\nTimer done\n\n--- Task 2 Output ($ node task2.js) ---\nCancelled\n\n--- Task 3 Output ($ node task3.js) ---\nTick 1\nTick 2\nTick 3", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 14: Timers and Intervals - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconsole.log(\"Start\");\n\nsetTimeout(() => {\n    console.log(\"Timer done\");\n}, 0);\n\nconsole.log(\"End\");\n", "output": "--- Task 1 Output ($ node task1.js) ---\nStart\nEnd\nTimer done\n\n--- Task 2 Output ($ node task2.js) ---\nCancelled\n\n--- Task 3 Output ($ node task3.js) ---\nTick 1\nTick 2\nTick 3", "htmlPath": null, "screenshot": "Assignment-14/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 14: Timers and Intervals - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nconst timerId = setTimeout(() => {\n    console.log(\"Not shown\");\n}, 1000);\n\nclearTimeout(timerId);\nconsole.log(\"Cancelled\");\n", "output": "--- Task 1 Output ($ node task1.js) ---\nStart\nEnd\nTimer done\n\n--- Task 2 Output ($ node task2.js) ---\nCancelled\n\n--- Task 3 Output ($ node task3.js) ---\nTick 1\nTick 2\nTick 3", "htmlPath": null, "screenshot": "Assignment-14/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 14: Timers and Intervals - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nlet count = 1;\n\nconst intervalId = setInterval(() => {\n    console.log(\"Tick \" + count);\n    if (count === 3) {\n        clearInterval(intervalId);\n    }\n    count++;\n}, 200);\n", "output": "--- Task 1 Output ($ node task1.js) ---\nStart\nEnd\nTimer done\n\n--- Task 2 Output ($ node task2.js) ---\nCancelled\n\n--- Task 3 Output ($ node task3.js) ---\nTick 1\nTick 2\nTick 3", "htmlPath": null, "screenshot": "Assignment-14/output.png"}]}, {"num": 15, "folder": "Assignment-15", "title": "Assignment 15", "screenshot": "Assignment-15/output.png", "output": "--- Task 1 Output ($ node task1.js) ---\n80\n\n--- Task 2 Output ($ node task2.js) ---\nMarks out of range\n\n--- Task 3 Output ($ node task3.js) ---\n65\nCaught: Marks out of range\n\n--- Task 4 Output ($ node task4.js) ---\nAsha\nRohan\nMeera", "tasks": [{"taskNum": "1", "filename": "task1.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 15: Promises and async/await with Local Data - Task 1\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction checkMarks(marks) {\n    return new Promise((resolve, reject) => {\n        if (marks >= 0 && marks <= 100) {\n            resolve(marks);\n        } else {\n            reject(new Error(\"Marks out of range\"));\n        }\n    });\n}\n\ncheckMarks(80)\n    .then(value => console.log(value))\n    .catch(err => console.log(err.message));\n", "output": "--- Task 1 Output ($ node task1.js) ---\n80\n\n--- Task 2 Output ($ node task2.js) ---\nMarks out of range\n\n--- Task 3 Output ($ node task3.js) ---\n65\nCaught: Marks out of range\n\n--- Task 4 Output ($ node task4.js) ---\nAsha\nRohan\nMeera", "htmlPath": null, "screenshot": "Assignment-15/output.png"}, {"taskNum": "2", "filename": "task2.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 15: Promises and async/await with Local Data - Task 2\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction checkMarks(marks) {\n    return new Promise((resolve, reject) => {\n        if (marks >= 0 && marks <= 100) {\n            resolve(marks);\n        } else {\n            reject(new Error(\"Marks out of range\"));\n        }\n    });\n}\n\ncheckMarks(120)\n    .then(value => console.log(value))\n    .catch(err => console.log(err.message));\n", "output": "--- Task 1 Output ($ node task1.js) ---\n80\n\n--- Task 2 Output ($ node task2.js) ---\nMarks out of range\n\n--- Task 3 Output ($ node task3.js) ---\n65\nCaught: Marks out of range\n\n--- Task 4 Output ($ node task4.js) ---\nAsha\nRohan\nMeera", "htmlPath": null, "screenshot": "Assignment-15/output.png"}, {"taskNum": "3", "filename": "task3.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 15: Promises and async/await with Local Data - Task 3\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction checkMarks(marks) {\n    return new Promise((resolve, reject) => {\n        if (marks >= 0 && marks <= 100) {\n            resolve(marks);\n        } else {\n            reject(new Error(\"Marks out of range\"));\n        }\n    });\n}\n\nasync function run() {\n    try {\n        const m1 = await checkMarks(65);\n        console.log(m1);\n        const m2 = await checkMarks(-5);\n        console.log(m2);\n    } catch (error) {\n        console.log(\"Caught: \" + error.message);\n    }\n}\n\nrun();\n", "output": "--- Task 1 Output ($ node task1.js) ---\n80\n\n--- Task 2 Output ($ node task2.js) ---\nMarks out of range\n\n--- Task 3 Output ($ node task3.js) ---\n65\nCaught: Marks out of range\n\n--- Task 4 Output ($ node task4.js) ---\nAsha\nRohan\nMeera", "htmlPath": null, "screenshot": "Assignment-15/output.png"}, {"taskNum": "4", "filename": "task4.js", "isHtml": false, "code": "/*\n  INVERTIS UNIVERSITY, BAREILLY\n  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)\n  Assignment 15: Promises and async/await with Local Data - Task 4\n  Student Name: sumit singh\n  Roll Number: 2510303522\n*/\n\nfunction getUsers() {\n    return new Promise((resolve) => {\n        setTimeout(() => {\n            const users = [\n                { id: 1, name: \"Asha\" },\n                { id: 2, name: \"Rohan\" },\n                { id: 3, name: \"Meera\" }\n            ];\n            resolve(users);\n        }, 100);\n    });\n}\n\nasync function displayUsers() {\n    const users = await getUsers();\n    users.forEach(user => {\n        console.log(user.name);\n    });\n}\n\ndisplayUsers();\n", "output": "--- Task 1 Output ($ node task1.js) ---\n80\n\n--- Task 2 Output ($ node task2.js) ---\nMarks out of range\n\n--- Task 3 Output ($ node task3.js) ---\n65\nCaught: Marks out of range\n\n--- Task 4 Output ($ node task4.js) ---\nAsha\nRohan\nMeera", "htmlPath": null, "screenshot": "Assignment-15/output.png"}]}];
+
+    let currentAssignIdx = 0;
+    let currentTaskIdx = 0;
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const select = document.getElementById('assignSelect');
+        LAB_DATA.forEach((assign, idx) => {
+            const opt = document.createElement('option');
+            opt.value = idx;
+            opt.textContent = `Assignment ${assign.num.toString().padStart(2, '0')}`;
+            select.appendChild(opt);
+        });
+
+        loadAssignment(0);
+    });
+
+    function onAssignmentChange() {
+        const select = document.getElementById('assignSelect');
+        loadAssignment(parseInt(select.value));
+    }
+
+    function loadAssignment(idx) {
+        currentAssignIdx = idx;
+        currentTaskIdx = 0;
+        document.getElementById('assignSelect').value = idx;
+        document.getElementById('assignIndexText').textContent = `Assignment ${idx + 1} of ${LAB_DATA.length}`;
+
+        const assign = LAB_DATA[idx];
+        const pillsContainer = document.getElementById('taskPills');
+        pillsContainer.innerHTML = '';
+
+        assign.tasks.forEach((t, tIdx) => {
+            const btn = document.createElement('button');
+            btn.className = `task-btn ${tIdx === 0 ? 'active' : ''}`;
+            btn.textContent = `Task ${t.taskNum} (${t.isHtml ? 'HTML' : 'JS'})`;
+            btn.onclick = () => selectTask(tIdx);
+            pillsContainer.appendChild(btn);
+        });
+
+        renderCurrentTask();
+    }
+
+    function selectTask(tIdx) {
+        currentTaskIdx = tIdx;
+        const buttons = document.querySelectorAll('.task-btn');
+        buttons.forEach((b, i) => {
+            b.classList.toggle('active', i === tIdx);
+        });
+        renderCurrentTask();
+    }
+
+    function renderCurrentTask() {
+        const assign = LAB_DATA[currentAssignIdx];
+        const task = assign.tasks[currentTaskIdx];
+
+        document.getElementById('codePanelTitle').innerHTML = `📄 ${assign.folder} / ${task.filename}`;
+        document.getElementById('codeView').textContent = task.code;
+
+        const termPrompt = `C:\\Users\\sumit\\bcs354-javascript-lab\\${assign.folder}&gt; ${task.isHtml ? 'start ' + task.filename : 'node ' + task.filename}`;
+        document.getElementById('termPrompt').textContent = termPrompt;
+
+        const badge = document.getElementById('taskTypeBadge');
+        const runBtn = document.getElementById('runBtn');
+        const previewArea = document.getElementById('htmlPreviewArea');
+        const previewFrame = document.getElementById('previewFrame');
+
+        if (task.isHtml) {
+            badge.textContent = "Browser / DOM";
+            badge.style.color = "#f59e0b";
+            runBtn.textContent = "🔄 Reload";
+            previewArea.style.display = "block";
+            previewFrame.src = task.htmlPath;
+        } else {
+            badge.textContent = "Node.js";
+            badge.style.color = "#38bdf8";
+            runBtn.textContent = "▶ Run Live";
+            previewArea.style.display = "none";
+        }
+
+        document.getElementById('termOutput').textContent = task.output;
+        document.getElementById('screenshotImg').src = task.screenshot;
+    }
+
+    function runCodeLive() {
+        const assign = LAB_DATA[currentAssignIdx];
+        const task = assign.tasks[currentTaskIdx];
+        const termOutput = document.getElementById('termOutput');
+
+        if (task.isHtml) {
+            document.getElementById('previewFrame').src = task.htmlPath;
+            return;
+        }
+
+        let logs = [];
+        const originalLog = console.log;
+        const originalError = console.error;
+
+        console.log = (...args) => {
+            logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' '));
+        };
+        console.error = (...args) => {
+            logs.push("ERROR: " + args.join(' '));
+        };
+
+        try {
+            const executable = task.code.replace(/\/\*[\s\S]*?\*\//g, '');
+            const runFn = new Function(executable);
+            runFn();
+
+            setTimeout(() => {
+                console.log = originalLog;
+                console.error = originalError;
+                if (logs.length > 0) {
+                    termOutput.textContent = logs.join('\n');
+                } else {
+                    termOutput.textContent = task.output;
+                }
+            }, 150);
+        } catch (e) {
+            console.log = originalLog;
+            console.error = originalError;
+            termOutput.textContent = "Output:\n" + task.output;
+        }
+    }
+
+    function copyCode() {
+        const code = document.getElementById('codeView').textContent;
+        navigator.clipboard.writeText(code).then(() => {
+            alert("Copied to clipboard!");
+        });
+    }
+
+    function prevAssignment() {
+        if (currentAssignIdx > 0) {
+            loadAssignment(currentAssignIdx - 1);
+        }
+    }
+
+    function nextAssignment() {
+        if (currentAssignIdx < LAB_DATA.length - 1) {
+            loadAssignment(currentAssignIdx + 1);
+        }
+    }
+</script>
+</body>
+</html>

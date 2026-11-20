@@ -1,0 +1,12 @@
+--- Task 1 Output ($ node task1.js) ---
+Start
+End
+Timer done
+
+--- Task 2 Output ($ node task2.js) ---
+Cancelled
+
+--- Task 3 Output ($ node task3.js) ---
+Tick 1
+Tick 2
+Tick 3

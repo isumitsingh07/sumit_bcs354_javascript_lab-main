@@ -1,0 +1,9 @@
+--- Task 1 Output ($ node task1.js) ---
+Asha
+88
+
+--- Task 2 Output ($ node task2.js) ---
+Algorithms has 320 pages
+
+--- Task 3 Output ($ node task3.js) ---
+Pass

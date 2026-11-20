@@ -1,0 +1,14 @@
+--- Task 1 Output ($ node task1.js) ---
+4
+72
+
+--- Task 2 Output ($ node task2.js) ---
+Maths
+Science
+English
+
+--- Task 3 Output ($ node task3.js) ---
+[ 72, 85, 90 ]
+
+--- Task 4 Output ($ node task4.js) ---
+6

@@ -1,0 +1,10 @@
+--- Task 1 Output ($ node task1.js) ---
+25
+
+--- Task 2 Output ($ node task2.js) ---
+Marks: 76/100
+
+--- Task 3 Output ($ node task3.js) ---
+Round 1
+Round 2
+Round 3

@@ -1,0 +1,11 @@
+--- Task 1 Output ($ node task1.js) ---
+Rohan
+81
+
+--- Task 2 Output ($ node task2.js) ---
+Maths
+Science
+
+--- Task 3 Output ($ node task3.js) ---
+Rohan
+12

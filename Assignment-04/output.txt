@@ -1,0 +1,8 @@
+--- Task 1 Output ($ node task1.js) ---
+Hello, Asha
+
+--- Task 2 Output ($ node task2.js) ---
+36
+
+--- Task 3 Output ($ node task3.js) ---
+118

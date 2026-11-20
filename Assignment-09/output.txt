@@ -1,0 +1,19 @@
+--- Task 1 (Pure JS & DOM Page) ---
+Initial Heading: Welcome
+Updated Heading: Button clicked
+(Also implemented in task1.html: click button changes heading text to "Button clicked")
+
+--- Task 2 Output ($ node task2.js) ---
+[]
+[ 'Name is required' ]
+
+--- Task 3 (Pure JS & LocalStorage Page) ---
+Saved note to storage: Study JavaScript for Semester Exams
+Loaded note from storage: Study JavaScript for Semester Exams
+(Also implemented in task3.html: saves input to localStorage under key "note" and displays on load)
+
+--- Task 4 (Pure JS & Quiz Page) ---
+Checking answer 4: Try again
+Checking answer 5: Correct
+Checking answer 6: Try again
+(Also implemented in task4.html: radio button quiz shows "Correct" for 5, "Try again" otherwise)

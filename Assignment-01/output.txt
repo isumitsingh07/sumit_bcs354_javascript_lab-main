@@ -1,0 +1,11 @@
+--- Task 1 Output (Browser Console F12) ---
+Hello from the script
+
+--- Task 2 Output ($ node task2.js) ---
+Sample College
+2026
+
+--- Task 3 Output ($ node task3.js) ---
+string
+number
+boolean

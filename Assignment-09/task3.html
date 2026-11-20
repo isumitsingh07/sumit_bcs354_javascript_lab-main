@@ -1,0 +1,36 @@
+<!--
+  INVERTIS UNIVERSITY, BAREILLY
+  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)
+  Assignment 9: DOM, Validation, Storage and Quiz - Task 3
+  Student Name: sumit singh
+  Roll Number: 2510303522
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LocalStorage Note</title>
+</head>
+<body>
+    <h1>Persistent Note</h1>
+    <input type="text" id="noteInput" placeholder="Enter note">
+    <button id="saveBtn">Save</button>
+
+    <script>
+        const input = document.getElementById("noteInput");
+        const saveBtn = document.getElementById("saveBtn");
+
+        // Load saved text on page open
+        const savedNote = localStorage.getItem("note");
+        if (savedNote !== null) {
+            input.value = savedNote;
+        }
+
+        // Save on click
+        saveBtn.addEventListener("click", function() {
+            localStorage.setItem("note", input.value);
+            alert("Note saved successfully!");
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!--
+  INVERTIS UNIVERSITY, BAREILLY
+  B.Tech CSE - Second Year | JavaScript Programming Lab (BCS354)
+  Assignment 9: DOM, Validation, Storage and Quiz - Task 4
+  Student Name: sumit singh
+  Roll Number: 2510303522
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Math Quiz</title>
+</head>
+<body>
+    <h2>What is 2 + 3?</h2>
+    <form id="quizForm">
+        <label><input type="radio" name="answer" value="4"> 4</label><br>
+        <label><input type="radio" name="answer" value="5"> 5</label><br>
+        <label><input type="radio" name="answer" value="6"> 6</label><br><br>
+        <button type="button" id="checkBtn">Check answer</button>
+    </form>
+    <p id="resultMsg" style="font-weight: bold; margin-top: 10px;"></p>
+
+    <script>
+        document.getElementById("checkBtn").addEventListener("click", function() {
+            const selected = document.querySelector('input[name="answer"]:checked');
+            const msg = document.getElementById("resultMsg");
+            if (selected && selected.value === "5") {
+                msg.textContent = "Correct";
+                msg.style.color = "green";
+            } else {
+                msg.textContent = "Try again";
+                msg.style.color = "red";
+            }
+        });
+    </script>
+</body>
+</html>

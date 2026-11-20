@@ -1,0 +1,14 @@
+--- Task 1 Output ($ node task1.js) ---
+80
+
+--- Task 2 Output ($ node task2.js) ---
+Marks out of range
+
+--- Task 3 Output ($ node task3.js) ---
+65
+Caught: Marks out of range
+
+--- Task 4 Output ($ node task4.js) ---
+Asha
+Rohan
+Meera

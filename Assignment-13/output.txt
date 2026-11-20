@@ -1,0 +1,10 @@
+--- Task 1 Output ($ node task1.js) ---
+465
+
+--- Task 2 Output ($ node task2.js) ---
+true
+false
+
+--- Task 3 Output ($ node task3.js) ---
+[ 77, 90, 69, 95 ]
+[ 72, 85, 64, 90 ]
